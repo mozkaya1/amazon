@@ -1,7 +1,7 @@
 # Get Price Discount Notification for Specific Product on Amazon.com/nl/es  ..
 
 ### Code 
-[git](https://github.com/mozkaya1/amazon) 
+[https://github.com/mozkaya1/amazon](https://github.com/mozkaya1/amazon) 
 
 ### Source Page
 > get amazon.com/nl/es link from product page .
@@ -48,7 +48,7 @@ go run main.go
 ### Notification -- (./amazon.sh)
 > I have used my own Telegram bot. You can use your own notification system as mail,notify so on ..
 
-![ncode](./static/notification-code.png)
+![ncode](./static/pic-selected-260609-1929-06.png)
 
 
 > Preview - Telegram
