@@ -53,7 +53,7 @@ go run main.go
 
 > Preview - Telegram
 
-![telegram](./static/notification.png) 
+![telegram](./static/pic-selected-260609-2109-13.png) 
 
 ### output log (./amazon.log)
 
@@ -65,4 +65,5 @@ go run main.go
 [2026-06-09 19:13:50] -- No Discount -- {"url":"https://www.amazon.com/TwinGrip-Pliers-Comfort-Grip-8-inch/dp/B097C7W2YK","price":36,"status":200,"discount":0}
 [2026-06-09 19:14:02] -- No Discount -- {"url":"https://www.amazon.com/TwinGrip-Pliers-Comfort-Grip-8-inch/dp/B097C7W2YK","price":36,"status":200,"discount":0}
 ```
+![output-log](./static/pic-selected-260609-2107-36.png) 
  
