@@ -53,7 +53,7 @@ go run main.go
 
 > Preview - Telegram
 
-![telegram](./static/pic-selected-260609-2109-13.png) 
+![telegram](./static/pic-selected-260609-2119-10.png) 
 
 ### output log (./amazon.log)
 
