@@ -6,7 +6,7 @@
 ### Source Page
 > get amazon.com/nl/es link from product page .
 
-![amazon](./static/pic-selected-260609-1912-10.png) 
+![amazon](./static/pic-selected-260609-1941-40.png) 
 
 ### initial setting on shell code (./amazon.sh)
 > adjust settings on ./amazon.sh
