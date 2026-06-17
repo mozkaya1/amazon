@@ -7,7 +7,7 @@ setPrice=50
 url="https://www.amazon.com/TwinGrip-Pliers-Comfort-Grip-8-inch/dp/B097C7W2YK"
 
 ## Set reasonable interval for price check 
-cooldown=10
+cooldown=3600
 
 ## Infinite loop for checking price ---
 while true ;do
