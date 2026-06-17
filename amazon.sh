@@ -31,7 +31,7 @@ url=`echo "${output}"|jq -r .url`
 discount=`printf "%.0f\n" $(echo ${output}|jq -r .discount)`
 
 
-if [[ $status == 200 && $discount != 0 $price != 0 ]]; then
+if [[ $status == 200 && $discount != 0 && $price != 0 ]]; then
 
   message="$timestamp - Amazon Discount Alert - % $discount -- $url" 
   setPrice=$price
