@@ -3,12 +3,13 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"github.com/PuerkitoBio/goquery"
+	http "github.com/bogdanfinn/fhttp"
+	"github.com/bogdanfinn/tls-client"
+	"github.com/bogdanfinn/tls-client/profiles"
 	"log"
-	"net/http"
 	"os"
 	"strconv"
-
-	"github.com/PuerkitoBio/goquery"
 )
 
 type data struct {
@@ -24,7 +25,27 @@ func (output *data) getPrice(url string, p float64) data {
 	if err != nil {
 		log.Println(err)
 	}
-	// More human requests ...
+
+	// tls client initialize
+	options := []tls_client.HttpClientOption{
+		tls_client.WithInsecureSkipVerify(),
+		tls_client.WithClientProfile(profiles.Chrome_146), // Mimics Chrome's TLS profile
+	}
+
+	client, err := tls_client.NewHttpClient(tls_client.NewLogger(), options...)
+	if err != nil {
+		log.Println("Error creating TLS client:", err)
+		return *output
+	}
+
+	//  fhttp request -- linked http
+	req, err = http.NewRequest("GET", url, nil)
+	if err != nil {
+		log.Println(err)
+		return *output
+	}
+
+	// Mimic human requests ...
 	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
 	req.Header.Set("Accept-Language", "en-US,en;q=0.9")
@@ -40,23 +61,29 @@ func (output *data) getPrice(url string, p float64) data {
 	req.Header.Set("sec-ch-ua-mobile", "?0")
 	req.Header.Set("sec-ch-ua-platform", `"Windows"`)
 
-	resp, err := http.DefaultClient.Do(req)
-	// _, err = io.ReadAll(resp.Body)
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Println("Request Failed:", err)
+	}
+	// body test usage --
 	// body, err := io.ReadAll(resp.Body)
 	// if err != nil {
 	// 	log.Println(err)
 	// }
-
+	// fmt.Println(string(body))
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		log.Println(err)
 	}
 
 	defer resp.Body.Close()
+
+	// Captcha Fail Check --
+	if doc.Find("form[action*='validateCaptcha']").Length() > 0 {
+		log.Println("Blocked! -- Amazon still requested a Captcha.")
+		return *output
+	}
+
 	price := doc.Find(".a-price-whole").First().Text()
 	// fmt.Println(string(output))
 	output.Status = resp.StatusCode
@@ -74,7 +101,7 @@ func (output *data) getPrice(url string, p float64) data {
 }
 
 func main() {
-	// url := flag.String("url", "https://www.amazon.nl/-/en/gp/product/B00OYQ2YOG?smid=A17D2BRD4YMT0X", "Set url to be Checked")
+	// Setting defaults --
 	url := flag.String("url", "https://www.amazon.com/TwinGrip-Pliers-Comfort-Grip-8-inch/dp/B097C7W2YK", "Set url to be Checked")
 	priceAlert := flag.Float64("set", 10, "Set Alarm Price Threshold, expected below this threshold")
 	flag.Parse()
